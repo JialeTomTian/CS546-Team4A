@@ -1,0 +1,5 @@
+wget
+numpy
+transformers
+openai
+fire
