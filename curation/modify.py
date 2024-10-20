@@ -68,7 +68,7 @@ class ModifyType(enum.Enum):
 def main(
     dataset_path: str,
     modify_type: ModifyType,
-    output_file: str,
+    output_path: str,
     debug: bool = False,
 ):
     data = []
@@ -96,39 +96,40 @@ def main(
         }
         tasks.append(task)
 
-    for task in tqdm(tasks):
-        client = openai.Client()
-        output = make_auto_request(
-            client,
-            task["prompt"],
-            model="gpt-4o",
-            max_tokens=2048,
-            temperature=0.2,
-            n=1,
-        )
-        annotation = output.choices[0].message.content
-        result = {
-            "name": task["task_id"],
-            "prompt": task["prompt"],
-            "original": original_solution,
-            "raw_modification": annotation,
-            "modification": remove_comments(
-                annotation.split(CAPTURE_HEAD)[-1].split(CAPTURE_TAIL)[0]
-            ),
-        }
-        # json.dump(result, output_file)
-        # output_file.write("\n")
-        # output_file.flush()
+    with open(output_path, "+a") as f_out:
+        for task in tqdm(tasks):
+            client = openai.Client()
+            output = make_auto_request(
+                client,
+                task["prompt"],
+                model="gpt-4o",
+                max_tokens=2048,
+                temperature=0.2,
+                n=1,
+            )
+            annotation = output.choices[0].message.content
+            result = {
+                "name": task["task_id"],
+                "prompt": task["prompt"],
+                "original": original_solution,
+                "raw_modification": annotation,
+                "modification": remove_comments(
+                    annotation.split(CAPTURE_HEAD)[-1].split(CAPTURE_TAIL)[0]
+                ),
+            }
+            json.dump(result, f_out)
+            f_out.write("\n")
+            f_out.flush()
 
-        # TODO: Check against test cases, only accept modification if test cases pass
+            # TODO: Check against test cases, only accept modification if test cases pass
 
-        if debug:
-            print("Modified Output", "-" * 80)
-            print(result["modification"])
-            print("-" * 80)
-            print("Enter to continue... or b to break:")
-            if input() == "b":
-                break
+            if debug:
+                print("Modified Output", "-" * 80)
+                print(result["modification"])
+                print("-" * 80)
+                print("Enter to continue... or b to break:")
+                if input() == "b":
+                    break
 
 
 if __name__ == "__main__":
