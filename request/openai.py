@@ -1,15 +1,11 @@
 import signal
 import time
+from typing import List
 
 import openai
 from openai.types.chat import ChatCompletion
 
-
-def construct_message_list(message, system_message=None):
-    msglist = [{"role": "user", "content": message}]
-    if system_message:
-        msglist.insert(0, {"role": "system", "content": system_message})
-    return msglist
+from request import construct_message_list
 
 
 def make_request(
@@ -24,7 +20,7 @@ def make_request(
 ) -> ChatCompletion:
     return client.chat.completions.create(
         model=model,
-        messages=construct_message_list(message, system_message=system_msg),
+        messages=construct_message_list(message),
         max_tokens=max_tokens,
         temperature=temperature,
         n=n,

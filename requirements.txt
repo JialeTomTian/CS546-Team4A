@@ -3,3 +3,5 @@ numpy
 transformers
 openai
 fire
+tree-sitter-python
+tree-sitter==0.23.1
