@@ -33,6 +33,6 @@ python run.py --dataset=sample.json
 ```
 To specify a custom log and result path:
 ```bash
-python run.py --dataset=sample.json --logs=/path/to/logs --results=/path/to/results.json
+python run.py --dataset=sample.json --logs=/path/to/logs --results=/path/to/result.json
 ```
 

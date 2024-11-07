@@ -166,4 +166,5 @@ cython_debug/
 .idea/
 
 
-*results*
+*result*
+*.DS_Store*
