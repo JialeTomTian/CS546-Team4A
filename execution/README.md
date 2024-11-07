@@ -35,4 +35,3 @@ To specify a custom log and result path:
 ```bash
 python run.py --dataset=sample.json --log=/path/to/logs --result=/path/to/result.json
 ```
-
