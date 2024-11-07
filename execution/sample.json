@@ -1,0 +1,20 @@
+[
+    {
+        "original_program": "def add(a, b):\n    result = a\n    result += b\n    return result\n",
+        "refactored_program": "def add(a, b):\n    return a + b\n",
+        "entrypoint_name": "add",
+        "test_code": "def check(func):\n    assert func(2, 3) == 5\n    assert func(-1, 1) == 0\n    assert func(0, 0) == 0\n"
+    },
+    {
+        "original_program": "def multiply(a, b):\n    result = a\n    result *= b\n    return result\n",
+        "refactored_program": "def multiply(a, b):\n    return a * b\n",
+        "entrypoint_name": "multiply",
+        "test_code": "def check(func):\n    assert func(2, 3) == 6\n    assert func(-1, 1) == -1\n    assert func(0, 0) == 0\n"
+    },
+    {
+        "original_program": "def subtract(a, b):\n    result = a\n    result -= b\n    return result\n",
+        "refactored_program": "def subtract(a, b):\n    return a - b\n",
+        "entrypoint_name": "subtract",
+        "test_code": "def check(func):\n    assert func(5, 3) == 2\n    assert func(-1, 1) == -2\n    assert func(0, 0) == 0\n"
+    }
+]
