@@ -20,11 +20,11 @@ python execution.py
 
 To run the dataset, use the following command:
 ```bash
-python run.py --dataset=<path_to_your_dataset> [--logs=<path_to_log>] [--results=<path_to_save_result>]
+python run.py --dataset=<path_to_your_dataset> [--log=<path_to_log>] [--result=<path_to_save_result>]
 ```
 * `--dataset`: Path to the JSON dataset (Required).
-* `--logs`: Path to store the logs (Optional). Default is `execution/logs/`.
-* `--results`: Path to save the results (Optional). Default is `execution/result.json`.
+* `--log`: Path to store the logs (Optional). Default is `execution/logs/`.
+* `--result`: Path to save the results (Optional). Default is `execution/result.json`.
 
 #### Example Usage
 To run with the default paths for logs and results:
@@ -33,6 +33,6 @@ python run.py --dataset=sample.json
 ```
 To specify a custom log and result path:
 ```bash
-python run.py --dataset=sample.json --logs=/path/to/logs --results=/path/to/result.json
+python run.py --dataset=sample.json --log=/path/to/logs --result=/path/to/result.json
 ```
 
