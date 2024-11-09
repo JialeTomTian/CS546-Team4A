@@ -27,7 +27,7 @@ python run.py --type=entry --entry=[json string]
 ```
 For example:
 ```bash
-python run.py --run-type=entry --entry="{\"original_program\": \"def subtract(a, b):\\n    result = a\\n    result -= b\\n    return result\\n\", \"refactored_program\": \"def subtract(a, b):\\n    return a - b\\n\", \"entrypoint_name\": \"subtract\", \"test_code\": \"def check(func):\\n    assert func(5, 3) == 2\\n    assert func(-1, 1) == -2\\n    assert func(0, 0) == 0\\n\"}"
+python run.py --type=entry --entry="{\"original_program\": \"def subtract(a, b):\\n    result = a\\n    result -= b\\n    return result\\n\", \"refactored_program\": \"def subtract(a, b):\\n    return a - b\\n\", \"entrypoint_name\": \"subtract\", \"test_code\": \"def check(func):\\n    assert func(5, 3) == 2\\n    assert func(-1, 1) == -2\\n    assert func(0, 0) == 0\\n\"}"
 ```
 It will print the result directly in the terminal.
 
