@@ -111,10 +111,30 @@ def run_dataset(dataset_path: str, log_path: str, result_file_path: str):
         logging.error(f"Error writing results to file: {e}")
 
 
+def run_entry(entry: str):
+
+    framework = Execution(entry, timeout=2.0)
+    results = framework.run()
+
+    print("Correctness:", results["correctness"])
+    print("Performance:", results["performance"])
+    print("Original Program Results:", results["original_results"])
+    print("Refactored Program Results:", results["refactored_results"])
+
+
 def main():
     parser = argparse.ArgumentParser(
-        description="Run code execution framework on dataset."
+        description="Run code execution framework on dataset or a single code string."
     )
+
+    parser.add_argument(
+        "--type",
+        choices=["dataset", "entry"],
+        required=True,
+        help="Specify the type: 'dataset' to run on a JSON dataset or 'entry' to run a single entry.",
+    )
+
+    # Dataset-related arguments
     parser.add_argument(
         "--dataset", help="Path to the JSON dataset", default="sample.json"
     )
@@ -125,9 +145,21 @@ def main():
         "--result", help="Path to store the results", default="result.json", nargs="?"
     )
 
+    # String-related argument
+    parser.add_argument(
+        "--entry", help="Code string to execute when --type is 'entry'", default=None
+    )
+
     args = parser.parse_args()
 
-    run_dataset(args.dataset, args.log, args.result)
+    if args.type == "dataset":
+        run_dataset(args.dataset, args.log, args.result)
+    elif args.type == "entry":
+        if args.entry:
+            entry_data = json.loads(args.entry)
+            run_entry(entry_data)
+        else:
+            print("Error: --entry argument is required when --run-type is 'entry'")
 
 
 if __name__ == "__main__":
