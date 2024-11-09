@@ -4,4 +4,8 @@ transformers
 openai
 fire
 tree-sitter-python
+pandas
+pyarrow
+fsspec
+huggingface_hub
 tree-sitter==0.23.1
