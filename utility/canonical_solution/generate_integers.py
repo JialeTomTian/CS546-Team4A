@@ -1,3 +1,26 @@
+# -*- coding: utf-8 -*-
+import psutil
+import os
+import time
+from functools import wraps
+def measure_performance(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        process = psutil.Process(os.getpid())
+
+        start_time = time.perf_counter()
+        start_mem = process.memory_info().rss / 1024  # KB
+
+        result = func(*args, **kwargs)
+        end_time = time.perf_counter()
+        end_mem = process.memory_info().rss / 1024
+
+        time_used = end_time - start_time
+        mem_used = end_mem - start_mem
+
+        return time_used*1_000_000,mem_used
+
+    return wrapper
 
 def generate_integers(a, b):
     """
@@ -45,5 +68,9 @@ def check(candidate):
     for i, (inp, exp) in enumerate(zip(inputs, results)):
         assertion(candidate(*inp), exp, 0)
 
-if __name__ == "__main__":
+@measure_performance
+def run():
     check(generate_integers)
+if __name__ == "__main__":
+    time_used,mem_used = run()
+    print(time_used,mem_used)

@@ -1,0 +1,11 @@
+Performance Test Summary
+==================================================
+Total files: 158
+Successful runs: 158
+Failed runs: 0
+Average time (¦Ìs): 120855.66
+Max time (¦Ìs): 5306537.00
+Min time (¦Ìs): 54.50
+Average memory (kb): 199.37
+Max memory (kb): 1488.00
+Min memory (kb): 4.00

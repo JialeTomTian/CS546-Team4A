@@ -8,4 +8,5 @@ pandas
 pyarrow
 fsspec
 huggingface_hub
+psutil
 tree-sitter==0.23.1
