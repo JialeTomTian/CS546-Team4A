@@ -21,7 +21,7 @@ class Execution:
         }
     """
 
-    def __init__(self, benchmark_entry: Dict[str, Any], timeout: float = 2.0):
+    def __init__(self, benchmark_entry: Dict[str, Any], timeout: float = 5.0):
         self.original_program = benchmark_entry["original_program"]
         self.refactored_program = benchmark_entry["refactored_program"]
         self.entrypoint_name = benchmark_entry["entrypoint_name"]

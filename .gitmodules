@@ -1,0 +1,15 @@
+[submodule "dataset/CodeForces/dataset/CodeForces/CodeForces-Solutions"]
+	path = dataset/CodeForces/dataset/CodeForces/CodeForces-Solutions
+	url = git@github.com:Chris-Perkins/CodeForces-Solutions.git
+[submodule "dataset/CodeForces/dataset/CodeForces/cf-testcases"]
+	path = dataset/CodeForces/dataset/CodeForces/cf-testcases
+	url = git@github.com:pvcodes/cf-testcases.git
+[submodule "dataset/dataset/CodeForces/cf-testcases"]
+	path = dataset/dataset/CodeForces/cf-testcases
+	url = git@github.com:pvcodes/cf-testcases.git
+[submodule "dataset/CodeForces/cf-testcases"]
+	path = dataset/CodeForces/cf-testcases
+	url = git@github.com:pvcodes/cf-testcases.git
+[submodule "dataset/CodeForces/CodeForces-Solutions"]
+	path = dataset/CodeForces/CodeForces-Solutions
+	url = git@github.com:Chris-Perkins/CodeForces-Solutions.git
