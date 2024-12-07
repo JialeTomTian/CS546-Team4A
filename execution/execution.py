@@ -46,6 +46,14 @@ class Execution:
             "refactored_results": refactored_results,
         }
 
+    # hacky method to run single program without comparison
+    def single_run(self) -> Dict[str, Any]:
+        original_results, original_perf = self._execute_code(
+            self.original_program, "original"
+        )
+
+        return {"correctness": original_results["status"], "perf": original_perf}
+
     def _execute_code(
         self, code: str, label: str
     ) -> Tuple[Dict[str, Any], Dict[str, float]]:
@@ -59,13 +67,15 @@ class Execution:
         try:
             spec = importlib.util.spec_from_file_location(module_name, temp_file.name)
             module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module)
 
             try:
                 spec.loader.exec_module(module)
             except IndentationError as e:
                 # Indentation error
                 results["status"] = f"failed: IndentationError: {str(e)}"
+                return results, performance
+            except Exception as e:
+                results["status"] = f"failed: {e}"
                 return results, performance
 
             start_time = time.time()
@@ -133,6 +143,25 @@ def time_limit(seconds: float):
 
 class TimeoutException(Exception):
     pass
+
+
+def single_execution(
+    input_program: str, test_cases: str, entry_point: str
+) -> Dict[str, Any]:
+    """
+    execution of singluar program and return statistics
+    """
+
+    framework = Execution(
+        {
+            "original_program": input_program,
+            "refactored_program": "",
+            "entrypoint_name": entry_point,
+            "test_code": test_cases,
+        }
+    )
+
+    return framework.single_run()
 
 
 if __name__ == "__main__":
