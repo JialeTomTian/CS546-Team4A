@@ -97,9 +97,13 @@ def main(
         if end_index and index > end_index:
             break
 
-        original_solution = remove_comments(
-            problem["prompt"] + problem["canonical_solution"]
-        )
+        if "prompt" in problem:
+            original_solution = remove_comments(
+                problem["prompt"] + problem["canonical_solution"]
+            )
+        else:
+            original_solution = remove_comments(problem["canonical_solution"])
+
         task = {
             "prompt": make_prompt(modify_type.value, original_solution),
             "task_id": problem["task_id"],

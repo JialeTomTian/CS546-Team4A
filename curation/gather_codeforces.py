@@ -1,7 +1,9 @@
+import json
 import os
 import re
 
 from datasets import load_dataset
+from tqdm import tqdm
 
 from execution.execution import single_execution
 
@@ -34,7 +36,7 @@ def check(function):
     """
 
 
-def main(dataset_path: str, debug: bool = False):
+def main(output_path: str, debug: bool = False, target_amount: int = 150):
     # Load the dataset
     dataset = load_dataset("evanellis/codeforces_with_only_correct_completions")
 
@@ -49,7 +51,7 @@ def main(dataset_path: str, debug: bool = False):
         tests_mapping[(contestId, index)] = {
             "test_cases": example["test_cases"],
             "task_name": "_".join(
-                re.sub(r"[^a-zA-Z0-9]", "", example["name"]).split(" ")
+                re.sub(r"[^a-zA-Z0-9]", "_", example["name"]).split(" ")
             ),
         }
 
@@ -93,18 +95,34 @@ def main(dataset_path: str, debug: bool = False):
                     else:
                         continue
 
-    print(len(tasks))
-    for original_program, test_cases, task_id, task_name in tasks:
-        # # generate the test code
-        code_wrapper = generate_code_wrapper(original_program, task_name)
-        test_code = generate_test_code(test_cases)
-        execution_results = single_execution(code_wrapper, test_code, task_name)
-        if debug:
-            print("Modified Output", "-" * 80)
-            print(code_wrapper + test_code)
-            print(execution_results)
-            print("Enter to continue... or b to break:")
-            if input() == "b":
+    count = 0
+    with open(output_path, "a+") as f_out:
+        for original_program, test_cases, task_id, task_name in tqdm(tasks):
+            # # generate the test code
+            code_wrapper = generate_code_wrapper(original_program, task_name)
+            test_code = generate_test_code(test_cases)
+            execution_results = single_execution(code_wrapper, test_code, task_name)
+            if debug:
+                print("Modified Output", "-" * 80)
+                print(code_wrapper + test_code)
+                print(execution_results)
+                print("Enter to continue... or b to break:")
+                if input() == "b":
+                    break
+
+            if execution_results["correctness"] == "passed":
+                result = {
+                    "task_id": task_id,
+                    "canonical_solution": code_wrapper,
+                    "entry_point": task_name,
+                    "test": test_code,
+                }
+                json.dump(result, f_out)
+                f_out.write("\n")
+                f_out.flush()
+                count += 1
+
+            if count >= target_amount:
                 break
 
 
