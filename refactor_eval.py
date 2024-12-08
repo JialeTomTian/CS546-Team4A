@@ -3,7 +3,8 @@ import os
 from enum import Enum
 from typing import Any, Dict
 
-from utility import progress
+from utility.parser import remove_comments
+from utility.utility import progress
 
 
 class Benchmark(Enum):
@@ -27,14 +28,13 @@ INSTRUCTION = (
 
 
 def construct_prompt(code: str) -> str:
-    return """
-{INSTRUCTION}
+    return f"""{INSTRUCTION}
 
 ```
 {code}
 ```
 
-Please follow format to complete the skeleton below:
+Please follow format to complete the skeleton below (do not wrap in format string):
 
 {CAPTURE_HEAD}
 Modified code snippet here
@@ -88,9 +88,9 @@ def main(
                     max_tokens=max_new_tokens,
                 )[0]
                 try:
-                    parsed_output = output.split(CAPTURE_HEAD)[-1].split(CAPTURE_TAIL)[
-                        0
-                    ]
+                    parsed_output = remove_comments(
+                        output.split(CAPTURE_HEAD)[-1].split(CAPTURE_TAIL)[0]
+                    )
                 except:
                     parsed_output = ""
 
