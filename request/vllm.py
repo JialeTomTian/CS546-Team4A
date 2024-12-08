@@ -1,7 +1,4 @@
-# SPDX-FileCopyrightText: (c) 2024 EvalPlus Team
-#
-# SPDX-License-Identifier: Apache-2.0
-
+# Credits: Partly taken from RepoQA (https://github.com/evalplus/repoqa/blob/main/repoqa/provider/vllm.py)
 from typing import List
 
 from transformers import AutoTokenizer  # type: ignore

@@ -69,13 +69,17 @@ class Execution:
             module = importlib.util.module_from_spec(spec)
 
             try:
-                spec.loader.exec_module(module)
+                with time_limit(self.timeout):
+                    spec.loader.exec_module(module)
             except IndentationError as e:
                 # Indentation error
                 results["status"] = f"failed: IndentationError: {str(e)}"
                 return results, performance
             except Exception as e:
                 results["status"] = f"failed: {e}"
+                return results, performance
+            except TimeoutException:
+                results["status"] = "timed out"
                 return results, performance
 
             start_time = time.time()

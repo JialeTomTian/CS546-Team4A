@@ -140,10 +140,6 @@ def main(
                     ),
                     "tests": task["test"],
                 }
-                json.dump(result, f_out)
-                f_out.write("\n")
-                f_out.flush()
-
                 execution_results = single_execution(
                     result["modification"],
                     task["test"],
@@ -163,6 +159,9 @@ def main(
                         ),
                     }
                     refactor_stats.append(refactor_stat)
+                    json.dump(result, f_out)
+                    f_out.write("\n")
+                    f_out.flush()
                 else:
                     attempt_count += 1
 

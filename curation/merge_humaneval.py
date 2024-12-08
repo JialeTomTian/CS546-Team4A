@@ -20,9 +20,9 @@ def main(
 ):
     # Hacky for now but it is okay, just class project
     jsonl_files = [
-        ("OBFUSCATE", "dataset/HumanEval/HumanEvalPlus-Refactor-Obfuscate.jsonl"),
-        ("DEAD_CODE", "dataset/HumanEval/HumanEvalPlus-Refactor-DeadCode.jsonl"),
-        ("INEFFICIENCY", "dataset/HumanEval/HumanEvalPlus-Refactor-Inefficiency.jsonl"),
+        ("OBFUSCATE", "dataset/HumanEval/HumanEvalPlus-Modify-Obfuscate.jsonl"),
+        ("DEAD_CODE", "dataset/HumanEval/HumanEvalPlus-Modify-DeadCode.jsonl"),
+        ("INEFFICIENCY", "dataset/HumanEval/HumanEvalPlus-Modify-Inefficiency.jsonl"),
     ]
     all_entries = []
 
