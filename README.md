@@ -1,13 +1,31 @@
 # CS546-Team4A
 Evaluating Code Refactoring Capabilities of LLMs (CS546 Final Project)
 
+## Running the Benchmarks:
+You can directly run the benchmarks and save the outputs direct into `results/model_outputs`.
+Currently, you can use the vllm and hf backends.
 
-## Repo Structure
+### vllm backend
+```shell
+python refactor_eval.py --model=deepseek-ai/deepseek-coder-6.7b-instruct --backend=vllm
+```
 
-- `curation`: Scripts to perform dataset curation and creation
-  - `modify.py`: Prompt GPT to perform modifacation on original
-- `dataset`: HumanEval and OpenSource Datasets
-  - `HumanEvalPlusOrig.jsonl`: Original HumanEval Problems
+### hf backend
+```shell
+python refactor_eval.py --model=deepseek-ai/deepseek-coder-6.7b-instruct --backend=hf
+```
+
+The results will be automatically parsed and stored within jsonl files with the apprioriate naming.
+
+## About Benchmarks
+The benchmarks for this project are stored in `dataset/Benchmark`
+- `dataset/Benchmark/CodeForces-Modify-Merged.jsonl`: A set of 100
+codeforces solutions found in the wild modified by GPT-4o to enable more refactoring
+- `dataset/Benchmark/HumanEvalPlus-Modify-Merged.jsonl`: A set of 100
+HumanEval canonical solutions modified by GPT-4o to enable more refactoring
+
+For each dataset, three modification strategies are performed: obfuscation,
+dead code and inefficiencies. With a 34, 33, 33 split across the 100 problems.
 
 ## Development Beginner Notice
 

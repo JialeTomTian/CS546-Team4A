@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from enum import Enum
 from typing import Any, Dict
 
@@ -34,10 +35,10 @@ def construct_prompt(code: str) -> str:
 {code}
 ```
 
-Please follow format to complete the skeleton below (do not wrap in format string):
+Please follow format to complete the skeleton below:
 
 {CAPTURE_HEAD}
-Modified code snippet here
+Refactored code snippet here
 {CAPTURE_TAIL}
 """
 
@@ -49,8 +50,10 @@ def main(
     result_dir: str = "results/model_outputs",
     base_url: str = None,
     trust_remote_code: bool = False,
-    max_new_tokens: int = 1024,
+    max_new_tokens: int = 512,
     debug: bool = False,
+    tensor_parallel_size: int = 2,
+    max_model_len: int = 1024,
 ):
     if backend == "openai":
         from request.openai import OpenAIProvider
@@ -60,6 +63,15 @@ def main(
         from request.vllm import VllmProvider
 
         engine = VllmProvider(
+            model,
+            trust_remote_code=trust_remote_code,
+            tensor_parallel_size=tensor_parallel_size,
+            max_model_len=max_model_len,
+        )
+    elif backend == "hf":
+        from request.hf import HfProvider
+
+        engine = HfProvider(
             model,
             trust_remote_code=trust_remote_code,
         )
@@ -88,9 +100,18 @@ def main(
                     max_tokens=max_new_tokens,
                 )[0]
                 try:
-                    parsed_output = remove_comments(
+                    parsed_block = remove_comments(
                         output.split(CAPTURE_HEAD)[-1].split(CAPTURE_TAIL)[0]
                     )
+
+                    search_pattern = r"^```(?:\w+)?\s*\n(.*?)(?=^```)```"
+                    code_blocks = re.findall(
+                        search_pattern, parsed_block, re.DOTALL | re.MULTILINE
+                    )
+                    if code_blocks:
+                        parsed_output = code_blocks[0]
+                    else:
+                        parsed_output = parsed_block
                 except:
                     parsed_output = ""
 
