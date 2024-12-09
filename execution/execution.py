@@ -64,7 +64,7 @@ class Execution:
         return {
             "original_size": original_size,
             "new_size": new_size,
-            "change": (new_size - original_size) / original_size,
+            "change": (original_size - new_size) / original_size,
         }
 
     # hacky method to run single program without comparison

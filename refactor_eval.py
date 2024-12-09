@@ -79,7 +79,7 @@ def main(
     os.makedirs(result_dir, exist_ok=True)
     model_output_path = os.path.join(
         result_dir,
-        f"{model.replace('/', '-')}-{str(benchmark)}.jsonl",
+        f"{model.replace('/', '-')}-{str(benchmark.name)}.jsonl",
     )
 
     tasks = []

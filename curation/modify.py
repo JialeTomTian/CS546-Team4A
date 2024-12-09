@@ -138,6 +138,7 @@ def main(
                     "modification": remove_comments(
                         annotation.split(CAPTURE_HEAD)[-1].split(CAPTURE_TAIL)[0]
                     ),
+                    "entry_point": task["entry_point"],
                     "tests": task["test"],
                 }
                 execution_results = single_execution(
