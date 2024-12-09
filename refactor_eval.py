@@ -54,6 +54,8 @@ def main(
     debug: bool = False,
     tensor_parallel_size: int = 2,
     max_model_len: int = 1024,
+    compute_results: bool = True,
+    score_dir: str = "results/scores",
 ):
     if backend == "openai":
         from request.openai import OpenAIProvider
@@ -129,6 +131,11 @@ def main(
                 }
                 f_out.write(json.dumps(result) + "\n")
                 f_out.flush()
+
+    if compute_results:
+        from compute_score import main as compute_score
+
+        compute_score(model_output_path, score_dir)
 
 
 if __name__ == "__main__":
