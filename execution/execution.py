@@ -9,7 +9,8 @@ import tracemalloc
 from typing import Any, Callable, Dict, List, Tuple
 
 from cirron import Collector  # type: ignore
-from transformers import AutoTokenizer
+from radon.metrics import h_visit  # type: ignore
+from transformers import AutoTokenizer  # type: ignore
 
 # Not the best idea but let's just do all our analysis here for now
 # If this becomes a real project, we can consider refactoring
@@ -44,6 +45,7 @@ class Execution:
         correctness = self._check_correctness(original_results, refactored_results)
         performance = self._compare_performance(original_perf, refactored_perf)
         size = self._compare_size(self.original_program, self.refactored_program)
+        complexity = self._compare_complexity(original_results, refactored_results)
 
         return {
             "correctness": correctness,
@@ -51,6 +53,7 @@ class Execution:
             "original_results": original_results,
             "refactored_results": refactored_results,
             "size": size,
+            "complexity": complexity,
         }
 
     def _compare_size(
@@ -132,6 +135,25 @@ class Execution:
 
         return results, performance
 
+    def _compare_complexity(
+        self, original_results: Dict[str, Any], refactored_results: Dict[str, Any]
+    ) -> Dict[str, str]:
+        try:
+            halsteed_original = h_visit(self.original_program).total.volume
+            halsteed_refactored = h_visit(self.refactored_program).total.volume
+
+            return {
+                "original": halsteed_original,
+                "refactored": halsteed_refactored,
+                "change": (halsteed_original - halsteed_refactored) / halsteed_original,
+            }
+        except Exception as e:
+            return {
+                "original": 0,
+                "refactored": 0,
+                "change": 0,
+            }
+
     def _check_correctness(
         self, original_results: Dict[str, Any], refactored_results: Dict[str, Any]
     ) -> bool:
@@ -202,6 +224,8 @@ if __name__ == "__main__":
 def add(a, b):
     result = a
     result += b
+    if False:
+        result += 1
     return result
 """,
         "refactored_program": """
@@ -222,6 +246,7 @@ def check(func):
 
     print("Correctness:", results["correctness"])
     print("Performance:", results["performance"])
+    print("Complexity:", results["complexity"])
     print("Original Program Results:", results["original_results"])
     print("Refactored Program Results:", results["refactored_results"])
 
