@@ -54,8 +54,9 @@ def main(
     debug: bool = False,
     tensor_parallel_size: int = 2,
     max_model_len: int = 1024,
-    compute_results: bool = True,
+    compute_results: bool = False,
     score_dir: str = "results/scores",
+    attn_implementation: str = None,
 ):
     if backend == "openai":
         from request.openai import OpenAIProvider
@@ -69,6 +70,7 @@ def main(
             trust_remote_code=trust_remote_code,
             tensor_parallel_size=tensor_parallel_size,
             max_model_len=max_model_len,
+            attn_implementation=attn_implementation,
         )
     elif backend == "hf":
         from request.hf import HfProvider
@@ -76,6 +78,7 @@ def main(
         engine = HfProvider(
             model,
             trust_remote_code=trust_remote_code,
+            attn_implementation=attn_implementation,
         )
 
     os.makedirs(result_dir, exist_ok=True)

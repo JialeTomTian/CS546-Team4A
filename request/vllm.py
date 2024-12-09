@@ -10,7 +10,12 @@ from request.base import BaseProvider
 
 class VllmProvider(BaseProvider):
     def __init__(
-        self, model, tensor_parallel_size, max_model_len=None, trust_remote_code=False
+        self,
+        model,
+        tensor_parallel_size,
+        max_model_len=None,
+        trust_remote_code=False,
+        attn_implementation=None,
     ):
         self.tokenizer = AutoTokenizer.from_pretrained(
             model, trust_remote_code=trust_remote_code
@@ -20,6 +25,7 @@ class VllmProvider(BaseProvider):
             tensor_parallel_size=tensor_parallel_size,
             max_model_len=max_model_len,
             trust_remote_code=trust_remote_code,
+            attn_implementation=attn_implementation,
         )
         self.stop_seq = []
         if self.tokenizer.chat_template:
