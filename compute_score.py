@@ -35,6 +35,8 @@ def main(
     humaneval_memory = []
     codeforces_size = []
     humaneval_size = []
+    codeforces_complexity = []
+    humaneval_complexity = []
     outputs = []
 
     for task in tqdm(tasks):
@@ -57,11 +59,13 @@ def main(
                 codeforces_cpu.append(result["performance"]["instruction_change"])
                 codeforces_memory.append(result["performance"]["memory_change"])
                 codeforces_size.append(result["size"]["change"])
+                codeforces_complexity.append(result["complexity"]["change"])
             else:
                 humaneval_accurate += 1
                 humaneval_cpu.append(result["performance"]["instruction_change"])
                 humaneval_memory.append(result["performance"]["memory_change"])
                 humaneval_size.append(result["size"]["change"])
+                humaneval_complexity.append(result["complexity"]["change"])
 
     with open(
         score_dir + os.path.splitext(os.path.basename(model_output))[0] + ".json", "w"
@@ -74,18 +78,23 @@ def main(
                     codeforces_memory + humaneval_memory
                 ),
                 "combined_size": statistics.mean(codeforces_size + humaneval_size),
+                "combined_complexity": statistics.mean(
+                    codeforces_complexity + humaneval_complexity
+                ),
             },
             "codeforces": {
                 "codeforces_accurate": codeforces_accurate / 100,
                 "codeforces_cpu": statistics.mean(codeforces_cpu),
                 "codeforces_memory": statistics.mean(codeforces_memory),
                 "codeforces_size": statistics.mean(codeforces_size),
+                "codeforces_complexity": statistics.mean(codeforces_complexity),
             },
             "humaneval": {
                 "humaneval_accurate": humaneval_accurate / 100,
                 "humaneval_cpu": statistics.mean(humaneval_cpu),
                 "humaneval_memory": statistics.mean(humaneval_memory),
                 "humaneval_size": statistics.mean(humaneval_size),
+                "humaneval_complexity": statistics.mean(humaneval_complexity),
             },
         }
         print(content)
