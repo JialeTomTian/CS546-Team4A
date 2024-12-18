@@ -26,20 +26,3 @@ HumanEval canonical solutions modified by GPT-4o to enable more refactoring
 
 For each dataset, three modification strategies are performed: obfuscation,
 dead code and inefficiencies. With a 34, 33, 33 split across the 100 problems.
-
-## Development Beginner Notice
-
-### After clone
-
-```shell
-pip install pre-commit
-pre-commit install
-pip install -r requirements.txt
-```
-
-### Import errors?
-
-```shell
-# Go to the root path of RepoQA
-export PYTHONPATH=$PYTHONPATH:$(pwd)
-```
